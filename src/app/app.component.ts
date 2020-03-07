@@ -15,6 +15,10 @@ export class AppComponent implements OnInit {
 
   onCreatePost(postData: { title: string; content: string }) {
     // Send Http request
+    this.http.post('https://services-revision.firebaseio.com/posts.json', postData)
+    .subscribe(responseData=>{
+      console.log(responseData);
+    })
   }
 
   onFetchPosts() {
