@@ -140,6 +140,16 @@ export class AuthInterceptorService implements HttpInterceptor {
 
 ```
 
+add token in appModule
+
+```ts
+providers: [{
+  provide: HTTP_INTERCEPTORS,
+  useClass: AuthInterceptorService,
+  multi: true
+  }]
+```
+
 #### logging Outgoung /Incomming
 
 Example to log Outgoung and Incomming req
