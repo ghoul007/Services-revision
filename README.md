@@ -119,3 +119,23 @@ for example in our example:
   }),
 )
 ```
+
+
+## interceptor
+
+Interceptors provide a mechanism to intercept and/or mutate outgoing requests or incoming responses
+[See more](https://alligator.io/angular/httpclient-interceptors/)
+
+```ts
+
+import { HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+
+export class AuthInterceptorService implements HttpInterceptor {
+  intercept(req: HttpRequest<any>, next: HttpHandler) {
+    const updReq = req.clone({ headers: req.headers.append('auth', 'basic') });
+
+    return next.handle(updReq);
+  }
+}
+
+```
