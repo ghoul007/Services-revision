@@ -139,3 +139,25 @@ export class AuthInterceptorService implements HttpInterceptor {
 }
 
 ```
+
+#### logging Outgoung /Incomming
+
+Example to log Outgoung and Incomming req
+
+```ts 
+
+console.log('Outgoung req');
+console.log(req.headers);
+
+return next.handle(req)
+  .pipe(
+    tap(event => {
+      if (event.type === HttpEventType.Response) {
+        console.log('Incoming req');
+        console.log(event);
+      }
+    })
+  )
+  ;
+}
+  ```
