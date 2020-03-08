@@ -11,3 +11,19 @@ Represents the header configuration options for an HTTP request. Instances are i
  ```
 
 ## HttpParams
+An HTTP request/response body that represents serialized parameters, per the MIME type application/x-www-form-urlencoded.
+[See more](https://angular.io/api/common/http/HttpParams)
+
+```ts
+ let searchParams = new HttpParams();
+    searchParams = searchParams.append('key1', 'value1');
+    searchParams = searchParams.append('key2', 'value2');
+    //  same  ...?key1=value1&key2=value2
+    return this.http
+      .get<{ [key: string]: Post }>(
+        'https://...',
+        {
+          params: searchParams,
+        }
+      )
+```
