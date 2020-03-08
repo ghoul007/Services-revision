@@ -96,3 +96,26 @@ You can use `reportProgress: true` to show some progress of any HTTP request
 ```
 
 Rq: to see all events, including the progress of transfers you need to use `observe: 'events'`
+
+
+## Transform response
+
+Map operator for RXJS, transform the items emitted by an Observable by applying a function to each item
+[See more](http://reactivex.io/documentation/operators/map.html)
+
+for example in our example:
+
+```ts
+
+.pipe(
+  map(responseData => {
+    const postsArray: Post[] = [];
+    for (const key in responseData) {
+      if (responseData.hasOwnProperty(key)) {
+        postsArray.push({ ...responseData[key], id: key });
+      }
+    }
+    return postsArray;
+  }),
+)
+```
