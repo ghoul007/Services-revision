@@ -27,3 +27,72 @@ An HTTP request/response body that represents serialized parameters, per the MIM
         }
       )
 ```
+
+
+### Observe Events
+A new feature with HttpClient is the ability to listen for progress events,
+
+```ts
+deletePosts() {
+    return this.http
+      .delete('https://services-revision.firebaseio.com/posts.json', {
+        observe: 'events',
+        responseType: 'text'
+      })
+      .pipe(
+        tap(event => {
+          console.log(event);
+          if (event.type === HttpEventType.Sent) {
+            // ...
+          }
+          if (event.type === HttpEventType.Response) {
+            console.log(event.body);
+          }
+        })
+      );
+  }
+```
+When using HttpClient#request() with an HTTP method, configure with observe: 'events' to see all events, including the progress of transfers.
+
+  *  HttpEventType
+all possible events on the response stream: 
+```ts
+enum HttpEventType {
+  Sent               // The request was sent out over the wire.
+  UploadProgress     // An upload progress event was received.
+  ResponseHeader     // The response status code and headers were received.
+  DownloadProgress   // A download progress event was received.
+  Response           // The full response including the body was received.
+  User               // A custom event from an interceptor or a backend.
+}
+```
+[See more](https://angular.io/api/common/http/HttpEventType)
+
+You can use `reportProgress: true` to show some progress of any HTTP request
+
+```ts
+	const req = new HttpRequest('GET', url, {reportProgress: true});
+		this.http
+				.request(req)
+				.subscribe((event:HttpEvent<any>)=>{
+					switch(event.type){
+						case HttpEventType.Sent:
+							console.log('Request sent!');
+							break;
+						case HttpEventType.ResponseHeader:
+							console.log('Response header received!');
+							break;
+						case HttpEventType.DownloadProgress:
+							const kbLoaded = Math.round(event.loaded / 1024);
+							console.log(`Download in progress! ${ kbLoaded }Kb loaded`);
+							break;
+						case HttpEventType.Response:
+							console.log('Done!', event.body);
+							break;
+					}
+				});
+	}
+
+```
+
+Rq: to see all events, including the progress of transfers you need to use `observe: 'events'`
